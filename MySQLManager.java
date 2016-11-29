@@ -13,22 +13,21 @@ import java.util.logging.Level;
 import java.util.Properties;
 import com.jcraft.jsch.*;
 import java.sql.*;
-import oracle.jdbc.driver.OracleDriver;
 
 public class MySQLManager {
 
-	private final int LOCAL_PORT = 22;
+	private final int LOCAL_PORT = 3307;
 	private final int REMOTE_PORT = 3306;
-	private final String REMOTE_HOST = "";
+	private final String REMOTE_HOST = "66.6.115.212";
 
-	private final String REMOTE_USER = "";
-	private final String REMOTE_PASS = "";
+	private final String REMOTE_USER = "pmrbr";
+	private final String REMOTE_PASS = "!tyler1";
 
-	private final String DB_USER = "";
-	private final String DB_PASS = "!";
+	private final String DB_USER = "pmrbr";
+	private final String DB_PASS = "!tyler1";
 
-	private final String DB_NAME = "";
-	private final String DB_TABLE_NAME = "";
+	private final String DB_NAME = "records_by_request";
+	private final String DB_TABLE_NAME = "requests";
 
 	private final static Logger LOGGER = Logger.getLogger(MySQLManager.class.getName());
 
@@ -77,7 +76,7 @@ public class MySQLManager {
 				.append(DB_PASS);
 
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			Connection connection = DriverManager.getConnection(url.toString());
 			DatabaseMetaData metadata = connection.getMetaData();
 			String[] tableType = { "TABLE", "VIEW" };
