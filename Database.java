@@ -1,39 +1,30 @@
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
 import java.util.Vector;
 
 public class Database extends MySQLManager {
-	
-	
-	private static String currentQuery = null;
-	
-	public Database() {
-		fillColumnNames();
-	}
 
-	private String[] tableColumnNames = { "Project", "Status", "Date Required",
-			"Time Required", "Date Submitted", "Request ID" };
+	private String currentQuery = null;
+	private Statement statement = null;
+	private ResultSet resultSet = null;
 
-	public Vector columnNames = new Vector();
+	protected Vector<String> visibleColumnNames = new Vector<String>();
 
-	private void fillColumnNames() {
-		for (String columnName : tableColumnNames) {
-			columnNames.addElement(columnName);
-		}
+	public Database(String[] visibleColumnNames) {
+		Collections.addAll(this.visibleColumnNames, visibleColumnNames);
 	}
 
 	protected void executeQuery(String sqlQuery) {
 		try {
-
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery(sqlQuery);
-			ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-
 			currentQuery = sqlQuery;
-			GUI.tableModel.setRowCount(0);
-			// ////////////////////////////////////////////////////////////
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sqlQuery);
+
+			System.out.printf("SQL Query: %s%n", currentQuery);
+
+			mainGUI.tableModel.setRowCount(0);
 
 			while (resultSet.next()) {
 				String project = resultSet.getString(5);
@@ -42,9 +33,10 @@ public class Database extends MySQLManager {
 				String timeRequired = resultSet.getString(3);
 				String dateSubmitted = resultSet.getString(4);
 				String requestID = resultSet.getString(1);
-				Object[] rowData = { project, status, dateRequired,
-						timeRequired, dateSubmitted, requestID };
-				GUI.tableModel.addRow(rowData);
+
+				Object[] rowData = { project, status, dateRequired, timeRequired, dateSubmitted, requestID };
+
+				mainGUI.tableModel.addRow(rowData);
 			}
 			resultSet.close();
 			statement.close();
@@ -55,12 +47,12 @@ public class Database extends MySQLManager {
 
 	}
 
-	public void refresh() {
+	protected void refresh() {
 		if (currentQuery != null) {
+			System.out.println("Refresh method invoked.");
 			executeQuery(currentQuery);
-			System.out.println("Refresh method called.");
 		} else {
-			System.out.println("Current query has a value of: null");
+			System.out.println("Current query has a value of: null.");
 		}
 	}
 }
