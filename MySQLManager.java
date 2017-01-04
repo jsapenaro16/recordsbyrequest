@@ -4,14 +4,14 @@ import java.sql.SQLException;
 
 public class MySQLManager {
 
-	private static final String DB_USER = "";
-	private static final String DB_PASS = "";
+	private static final String DB_USER = "pmrbr";
+	private static final String DB_PASS = "!tyler1";
 
-	private static final String HOST = ""; // 136.63.192.54
+	private static final String HOST = "localhost"; // 136.63.192.54
 	private static final int PORT = 3306;
 
 	private static final String DB_NAME = "records_by_request";
-	private static final String DB_TABLE_NAME = "requests";
+	public static final String DB_TABLE_NAME = "requests";
 
 	protected static Connection connection = null;
 
@@ -21,7 +21,7 @@ public class MySQLManager {
 	public static void main(String[] args) {
 		connect();
 		database = new Database(
-				new String[] { "Project", "Status", "Date Required", "Time Required", "Date Submitted" });
+				new String[] { "Project", "Status", "Date Required", "Time Required", "Date Submitted", "Request ID", "Patient First Name", "Patient Last Name"});
 		mainGUI = new MainGUI();
 		database.executeQuery("SELECT * FROM " + DB_TABLE_NAME);
 	}
