@@ -70,6 +70,7 @@ public class MainGUI extends javax.swing.JFrame {
 		dataTable.setModel(tableModel);
 		dataTable.changeSelection(0, 0, false, false);
 		dataTable.setDefaultEditor(Object.class, null);
+		dataTable.setAutoCreateRowSorter(true);
 
 		tableScrollPane = new JScrollPane();
 		tableScrollPane.setViewportView(dataTable);
@@ -141,7 +142,7 @@ public class MainGUI extends javax.swing.JFrame {
 	private AbstractAction searchAction = new AbstractAction() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("do search boi");
+			MySQLManager.database.executeSearchQuery(searchBar.getText());
 		}
 
 	};
