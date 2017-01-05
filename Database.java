@@ -63,6 +63,7 @@ public class Database extends MySQLManager {
 		}
 
 		try {
+			currentQuery = searchQuery.toString();
 			System.out.println(searchQuery.toString());
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(searchQuery.toString());
