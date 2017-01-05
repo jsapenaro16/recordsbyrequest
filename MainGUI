@@ -143,7 +143,6 @@ public class MainGUI extends javax.swing.JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			MySQLManager.database.executeSearchQuery(searchBar.getText());
-			dataTable.requestFocus();
 		}
 
 	};
@@ -152,7 +151,6 @@ public class MainGUI extends javax.swing.JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			MySQLManager.database.refresh();
-			dataTable.requestFocus();
 		}
 
 	};
