@@ -27,7 +27,7 @@ public class MySQLManager {
 		database = new Database(new String[] { "Project", "Status", "Date Required", "Time Required", "Date Submitted",
 				"Request ID", "Requester First", "Requester Last", "Patient First", "Patient Last" });
 		mainGUI = new MainGUI();
-		database.executeSearchQuery("NEW");
+		database.executeSearchQuery("");
 	}
 
 	private static void connect() {
