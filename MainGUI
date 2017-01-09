@@ -1,25 +1,35 @@
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 @SuppressWarnings("serial")
-public class MainGUI extends javax.swing.JFrame {
+public class MainGUI extends JFrame {
 
 	private JLabel logoLabel;
 	private JTextField searchBar;
@@ -31,21 +41,12 @@ public class MainGUI extends javax.swing.JFrame {
 	protected DefaultTableModel tableModel = new DefaultTableModel(MySQLManager.database.visibleColumnNames, 0);
 
 	public MainGUI() {
-		java.awt.EventQueue.invokeLater(new Runnable() {
+		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
+				// setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
 				initComponents();
 			}
 		});
-	}
-
-	private void setLookAndFeel(String lookAndFeel) {
-		try {
-			UIManager.setLookAndFeel(lookAndFeel);
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private void initComponents() {
@@ -71,12 +72,25 @@ public class MainGUI extends javax.swing.JFrame {
 		dataTable.changeSelection(0, 0, false, false);
 		dataTable.setDefaultEditor(Object.class, null);
 		dataTable.setAutoCreateRowSorter(true);
+		dataTable.registerKeyboardAction(enterPressed, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+				JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		dataTable.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent me) {
+				JTable table = (JTable) me.getSource();
+				Point p = me.getPoint();
+				int row = table.rowAtPoint(p);
+				if (me.getClickCount() == 2) {
+					System.out.println("Double Mouse Click");
+					newEditorGUI();
+				}
+			}
+		});
 
 		tableScrollPane = new JScrollPane();
 		tableScrollPane.setViewportView(dataTable);
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		setSize(new java.awt.Dimension(1000, 600));
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setSize(new Dimension(1000, 600));
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("opus_logo_small.png"));
@@ -143,6 +157,7 @@ public class MainGUI extends javax.swing.JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			MySQLManager.database.executeSearchQuery(searchBar.getText());
+			dataTable.requestFocus();
 		}
 
 	};
@@ -151,7 +166,22 @@ public class MainGUI extends javax.swing.JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			MySQLManager.database.refresh();
+			dataTable.requestFocus();
 		}
 
 	};
+
+	private AbstractAction enterPressed = new AbstractAction() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Enter Pressed");
+			newEditorGUI();
+		}
+
+	};
+
+	private void newEditorGUI() {
+		System.out.println("New Editor GUI");
+		new EditorGUI();
+	}
 }
