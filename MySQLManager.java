@@ -2,6 +2,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 public class MySQLManager {
 
 	private static final String DB_USER = "pmrbr";
@@ -19,12 +22,12 @@ public class MySQLManager {
 	public static Database database = null;
 
 	public static void main(String[] args) {
+		setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
 		connect();
-		database = new Database(
-				new String[] { "Project", "Status", "Date Required", "Time Required", "Date Submitted", "Request ID",
-						"Requester First", "Requester Last", "Patient First", "Patient Last" });
+		database = new Database(new String[] { "Project", "Status", "Date Required", "Time Required", "Date Submitted",
+				"Request ID", "Requester First", "Requester Last", "Patient First", "Patient Last" });
 		mainGUI = new MainGUI();
-	database.executeSearchQuery("NEW");
+		database.executeSearchQuery("NEW");
 	}
 
 	private static void connect() {
@@ -47,6 +50,15 @@ public class MySQLManager {
 		URL.append(host + ':').append(port).append('/').append(db_name);
 
 		return URL.toString();
+	}
+
+	private static void setLookAndFeel(String lookAndFeel) {
+		try {
+			UIManager.setLookAndFeel(lookAndFeel);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
