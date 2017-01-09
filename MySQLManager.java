@@ -7,8 +7,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class MySQLManager {
 
-	private static final String DB_USER = "pmrbr";
-	private static final String DB_PASS = "!tyler1";
+	private static final String DB_USER = "";
+	private static final String DB_PASS = "";
 
 	private static final String HOST = "localhost"; // 136.63.192.54
 	private static final int PORT = 3306;
