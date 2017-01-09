@@ -61,8 +61,8 @@ public class Database extends MySQLManager {
 	}
 
 	protected void refresh() {
-			System.out.println("Refresh method invoked.");
-			executeSearchQuery(currentKeyword);
+		System.out.println("Refresh method invoked.");
+		executeSearchQuery(currentKeyword);
 	}
 
 	private ArrayList<String> getColumnNames() {
