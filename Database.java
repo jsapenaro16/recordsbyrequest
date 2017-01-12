@@ -3,7 +3,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Vector;
 
 public class Database extends MySQLManager {
@@ -16,15 +15,19 @@ public class Database extends MySQLManager {
 	protected Vector<String> visibleColumnNames = new Vector<String>();
 	protected ArrayList<String> columnNames = getColumnNames();
 
+	public ArrayList<Row> rows = new ArrayList<Row>();
+
 	public Database(String[] visibleColumnNames) {
 		Collections.addAll(this.visibleColumnNames, visibleColumnNames);
 	}
 
 	protected void executeSearchQuery(String keyword) {
 		currentKeyword = keyword;
-		StringBuilder searchQuery = new StringBuilder("SELECT * FROM ").append(DB_TABLE_NAME).append(" WHERE ");
+		StringBuilder searchQuery = new StringBuilder("SELECT * FROM ").append(
+				DB_TABLE_NAME).append(" WHERE ");
 		for (int i = 0; i < columnNames.size(); i++) {
-			searchQuery.append(columnNames.get(i) + " LIKE '%" + keyword + "%'");
+			searchQuery
+					.append(columnNames.get(i) + " LIKE '%" + keyword + "%'");
 
 			if (i != (columnNames.size() - 1)) {
 				searchQuery.append(" OR ");
@@ -37,7 +40,8 @@ public class Database extends MySQLManager {
 			resultSet = statement.executeQuery(searchQuery.toString());
 
 			mainGUI.tableModel.setRowCount(0);
-			List<Row> rows = new ArrayList<Row>();
+			rows.clear();
+
 			while (resultSet.next()) {
 				String[] information = new String[17];
 				for (int i = 0; i < 17; i++) {
@@ -47,11 +51,42 @@ public class Database extends MySQLManager {
 
 			}
 			for (Row row : rows) {
-				row.printRows();
 				mainGUI.tableModel.addRow(row.visibleRowData);
 			}
 
 			resultSet.close();
+			statement.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	protected void performUpdates(String[] tableValueData, String[] sqlData,
+			String[] tableFieldData) {
+
+		try {
+			statement = connection.createStatement();
+			
+			
+
+			for (int i = 0; i < tableValueData.length; i++) {
+				if (tableValueData[i] != sqlData[i]) {
+					String newValue = tableValueData[i];
+					String oldValue = sqlData[i];
+					String fieldName = tableFieldData[i];
+					
+					System.out.println("sfgdfgdfg");
+					System.out.printf("%s != %s%n", newValue, oldValue);
+
+					String sqlUpdateQuery = "UPDATE requests SET " + fieldName + "='" + newValue
+							+ "' WHERE " + tableFieldData[0] + "=" + sqlData[0];
+					statement.executeUpdate(sqlUpdateQuery);
+					System.out.println(sqlUpdateQuery);
+				}
+			}
+
 			statement.close();
 
 		} catch (SQLException e) {
