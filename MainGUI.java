@@ -38,7 +38,8 @@ public class MainGUI extends JFrame {
 	private JScrollPane tableScrollPane;
 	private JTable dataTable;
 
-	protected DefaultTableModel tableModel = new DefaultTableModel(MySQLManager.database.visibleColumnNames, 0);
+	protected DefaultTableModel tableModel = new DefaultTableModel(
+			MySQLManager.database.visibleColumnNames, 0);
 
 	public MainGUI() {
 		EventQueue.invokeLater(new Runnable() {
@@ -72,7 +73,8 @@ public class MainGUI extends JFrame {
 		dataTable.changeSelection(0, 0, false, false);
 		dataTable.setDefaultEditor(Object.class, null);
 		dataTable.setAutoCreateRowSorter(true);
-		dataTable.registerKeyboardAction(enterPressed, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+		dataTable.registerKeyboardAction(enterPressed,
+				KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
 				JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		dataTable.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent me) {
@@ -80,7 +82,6 @@ public class MainGUI extends JFrame {
 				Point p = me.getPoint();
 				int row = table.rowAtPoint(p);
 				if (me.getClickCount() == 2) {
-					System.out.println("Double Mouse Click");
 					newEditorGUI();
 				}
 			}
@@ -93,7 +94,8 @@ public class MainGUI extends JFrame {
 		setSize(new Dimension(1000, 600));
 		setLocationRelativeTo(null);
 		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("opus_logo_small.png"));
+		setIconImage(Toolkit.getDefaultToolkit()
+				.getImage("opus_logo_small.png"));
 		setTitle("Records By Request Database");
 		initLayout();
 		setVisible(true);
@@ -104,35 +106,75 @@ public class MainGUI extends JFrame {
 	private void initLayout() {
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(GroupLayout.Alignment.TRAILING,
-						layout.createSequentialGroup().addContainerGap()
-								.addComponent(logoLabel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
-								.addComponent(searchBar, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(searchBarButton, GroupLayout.PREFERRED_SIZE, 55,
+		layout.setHorizontalGroup(layout
+				.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addGroup(
+						GroupLayout.Alignment.TRAILING,
+						layout.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(logoLabel,
+										GroupLayout.PREFERRED_SIZE, 100,
 										GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(refreshButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED,
+										GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)
+								.addComponent(searchBar,
+										GroupLayout.PREFERRED_SIZE, 116,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(searchBarButton,
+										GroupLayout.PREFERRED_SIZE, 55,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(refreshButton,
+										GroupLayout.PREFERRED_SIZE, 55,
+										GroupLayout.PREFERRED_SIZE)
 								.addContainerGap())
-				.addComponent(tableScrollPane, GroupLayout.DEFAULT_SIZE, 981, Short.MAX_VALUE));
-		layout.setVerticalGroup(
-				layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-						.addGroup(layout.createSequentialGroup().addContainerGap()
-								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-										.addGroup(layout.createSequentialGroup().addGap(0, 28, Short.MAX_VALUE)
-												.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-														.addComponent(searchBar, GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-														.addComponent(searchBarButton).addComponent(refreshButton)))
-										.addGroup(layout.createSequentialGroup()
-												.addComponent(logoLabel, GroupLayout.PREFERRED_SIZE, 47,
-														GroupLayout.PREFERRED_SIZE)
-												.addGap(0, 0, Short.MAX_VALUE)))
-								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(tableScrollPane,
-										GroupLayout.PREFERRED_SIZE, 513, GroupLayout.PREFERRED_SIZE)
+				.addComponent(tableScrollPane, GroupLayout.DEFAULT_SIZE, 981,
+						Short.MAX_VALUE));
+		layout.setVerticalGroup(layout
+				.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addGroup(
+						layout.createSequentialGroup()
+								.addContainerGap()
+								.addGroup(
+										layout.createParallelGroup(
+												GroupLayout.Alignment.LEADING)
+												.addGroup(
+														layout.createSequentialGroup()
+																.addGap(0,
+																		28,
+																		Short.MAX_VALUE)
+																.addGroup(
+																		layout.createParallelGroup(
+																				GroupLayout.Alignment.BASELINE)
+																				.addComponent(
+																						searchBar,
+																						GroupLayout.PREFERRED_SIZE,
+																						GroupLayout.DEFAULT_SIZE,
+																						GroupLayout.PREFERRED_SIZE)
+																				.addComponent(
+																						searchBarButton)
+																				.addComponent(
+																						refreshButton)))
+												.addGroup(
+														layout.createSequentialGroup()
+																.addComponent(
+																		logoLabel,
+																		GroupLayout.PREFERRED_SIZE,
+																		47,
+																		GroupLayout.PREFERRED_SIZE)
+																.addGap(0,
+																		0,
+																		Short.MAX_VALUE)))
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(tableScrollPane,
+										GroupLayout.PREFERRED_SIZE, 513,
+										GroupLayout.PREFERRED_SIZE)
 								.addGap(14, 14, 14)));
 
 		pack();
@@ -174,14 +216,15 @@ public class MainGUI extends JFrame {
 	private AbstractAction enterPressed = new AbstractAction() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Enter Pressed");
 			newEditorGUI();
 		}
 
 	};
 
 	private void newEditorGUI() {
-		System.out.println("New Editor GUI");
-		new EditorGUI();
+		int selectedRow = dataTable.getSelectedRow();
+		if (selectedRow > -1) {
+			new EditorGUI(selectedRow);
+		}
 	}
 }
